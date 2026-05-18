@@ -168,13 +168,6 @@ fastapi-llm-rag-cookbook/
   Dockerfile
 ```
 
-## Notes for production
-
-- Swap `GENERATION_MODEL` in `.env` or move to an API-backed LLM for higher quality.
-- Add PDF ingestion if needed; sample data is `.txt` only.
-- Tune `CHUNK_SIZE`, `TOP_K`, `MAX_NEW_TOKENS` in `rag/config.py`.
-
-
 ## References
 
 | Part | Article |
