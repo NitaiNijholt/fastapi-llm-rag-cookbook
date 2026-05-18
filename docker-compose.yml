@@ -1,0 +1,51 @@
+# FastAPI app + ChromaDB on an isolated bridge network.
+# API: http://localhost:8000  |  Chroma HTTP: http://localhost:8001
+
+networks:
+  rag-net:
+    driver: bridge
+
+volumes:
+  chroma_data:
+  huggingface_cache:
+
+services:
+  chroma:
+    image: chromadb/chroma:1.5.9
+    container_name: fastapi-llm-rag-cookbook-chroma
+    networks:
+      - rag-net
+    ports:
+      - "127.0.0.1:8001:8000"
+    volumes:
+      - chroma_data:/chroma/chroma
+    environment:
+      IS_PERSISTENT: "TRUE"
+      ANONYMIZED_TELEMETRY: "FALSE"
+    healthcheck:
+      # Chroma image has no python/curl; check port 8000 is accepting connections.
+      test: ["CMD-SHELL", "bash -c 'exec 3<>/dev/tcp/127.0.0.1/8000'"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    restart: unless-stopped
+
+  api:
+    build: .
+    image: fastapi-llm-rag-cookbook-api
+    container_name: fastapi-llm-rag-cookbook-api
+    networks:
+      - rag-net
+    ports:
+      - "127.0.0.1:8000:8000"
+    environment:
+      CHROMA_HOST: chroma
+      CHROMA_PORT: "8000"
+      HF_HOME: /data/huggingface
+    volumes:
+      - huggingface_cache:/data/huggingface
+    depends_on:
+      chroma:
+        condition: service_healthy
+    restart: unless-stopped

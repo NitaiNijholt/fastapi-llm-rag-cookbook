@@ -1,0 +1,49 @@
+[project]
+name = "fastapi-llm-rag-cookbook"
+version = "0.1.0"
+description = "FastAPI cookbook: local instruct LLM generation and ChromaDB RAG."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "chromadb>=0.5",
+  "fastapi[standard]",
+  "pydantic",
+  "sentence-transformers",
+  "transformers",
+  "torch",
+  "uvicorn[standard]",
+  "python-dotenv>=1.2.2",
+]
+
+[tool.uv]
+package = false
+
+[tool.uv.sources]
+torch = [
+    { index = "pytorch-cpu" },
+]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "D"]
+ignore = ["D100"]  # module docstring present; skip package-only rule noise
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.3",
+    "ruff>=0.14.8",
+]

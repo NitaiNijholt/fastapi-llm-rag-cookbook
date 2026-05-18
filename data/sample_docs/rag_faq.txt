@@ -1,0 +1,15 @@
+Retrieval-Augmented Generation (RAG) combines information retrieval with text generation.
+
+A RAG system first retrieves relevant text chunks from a knowledge base and then uses those chunks as context for a language model.
+
+ChromaDB is an open-source vector database for storing text chunks and embeddings.
+
+Embeddings represent text as vectors so semantically similar passages can be found with similarity search.
+
+In a typical RAG pipeline, documents are loaded, split into chunks, embedded with a model such as all-MiniLM-L6-v2, and stored in ChromaDB.
+
+When a user asks a question, the question is embedded, the nearest chunks are retrieved, and the language model generates an answer using that retrieved context.
+
+FastAPI can expose RAG functionality through endpoints for ingesting documents, checking health, and asking questions.
+
+Local CPU-friendly models are useful for demos because they can run without API keys or specialized GPU infrastructure.

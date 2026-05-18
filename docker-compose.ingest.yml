@@ -1,0 +1,19 @@
+# One-shot ingest of sample docs into Chroma (run after stack is up).
+# Usage: docker compose -f docker-compose.yml -f docker-compose.ingest.yml run --rm ingest
+
+services:
+  ingest:
+    image: fastapi-llm-rag-cookbook-api
+    build: .
+    networks:
+      - rag-net
+    environment:
+      CHROMA_HOST: chroma
+      CHROMA_PORT: "8000"
+      HF_HOME: /data/huggingface
+    volumes:
+      - huggingface_cache:/data/huggingface
+    depends_on:
+      chroma:
+        condition: service_healthy
+    command: ["python", "-m", "scripts.ingest_docs", "data/sample_docs"]
