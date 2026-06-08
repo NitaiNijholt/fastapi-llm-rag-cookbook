@@ -147,13 +147,34 @@ uv run bash tests/readme_retest.sh
 
 ### Oracle Linux 9 integration test
 
-Full Docker + ingest + RAG + host `pytest` inside an OL9 environment (dev: WSL +
-Docker Desktop; deploy: `RUN_ON_HOST_OL9=1` on the server).
+End-to-end check on a RHEL-family host: `docker compose up`, ingest, `POST /rag/ask`,
+and host `pytest` (including the sqlite workaround for OL9 system Python).
+
+**From a dev machine (WSL + Docker Desktop):** the script runs inside an
+`oraclelinux:9` container and uses your host Docker socket.
 
 ```bash
 ./scripts/ol9-integration-test.sh
 # logs/ol9_integration_<timestamp>.log
 ```
+
+**On an OL9 server with native Docker** (no nested container):
+
+```bash
+RUN_ON_HOST_OL9=1 ./scripts/ol9-integration-test.sh
+```
+
+**Options:**
+
+| Flag / env | Effect |
+|------------|--------|
+| `--keep` | Leave the compose stack running after the test |
+| `--resume` | Skip `compose up` (stack already running) |
+| `RUN_ON_HOST_OL9=1` | Run on the current host instead of inside OL9 container |
+| `OL9_IMAGE` | Override base image (default `oraclelinux:9`) |
+
+Requires Docker running. On WSL, Docker Desktop must be up (`/var/run/docker.sock`).
+First run may take a few minutes while models download.
 
 ---
 
