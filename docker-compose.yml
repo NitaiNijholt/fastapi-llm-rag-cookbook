@@ -18,10 +18,8 @@ services:
     ports:
       - "127.0.0.1:8001:8000"
     volumes:
-      - chroma_data:/chroma/chroma
-    environment:
-      IS_PERSISTENT: "TRUE"
-      ANONYMIZED_TELEMETRY: "FALSE"
+      # Chroma 1.5.x persists to /data (not /chroma/chroma).
+      - chroma_data:/data
     healthcheck:
       # Chroma image has no python/curl; check port 8000 is accepting connections.
       test: ["CMD-SHELL", "bash -c 'exec 3<>/dev/tcp/127.0.0.1/8000'"]

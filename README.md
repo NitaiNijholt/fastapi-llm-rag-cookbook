@@ -104,7 +104,7 @@ docker compose -f docker-compose.yml -f docker-compose.ingest.yml run --rm inges
 | FastAPI | http://localhost:8000 |
 | Chroma HTTP | http://localhost:8001 |
 
-Volumes: `chroma_data` (vectors), `huggingface_cache` (model weights).
+Volumes: `chroma_data` (Chroma DB at `/data` in the container), `huggingface_cache` (model weights).
 
 Stop: `docker compose down`
 
