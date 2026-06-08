@@ -145,6 +145,16 @@ uv run bash tests/readme_retest.sh
 # logs: logs/readme_retest_<timestamp>.log
 ```
 
+### Oracle Linux 9 integration test
+
+Full Docker + ingest + RAG + host `pytest` inside an OL9 environment (dev: WSL +
+Docker Desktop; deploy: `RUN_ON_HOST_OL9=1` on the server).
+
+```bash
+./scripts/ol9-integration-test.sh
+# logs/ol9_integration_<timestamp>.log
+```
+
 ---
 
 ## Project layout
@@ -159,6 +169,8 @@ fastapi-llm-rag-cookbook/
     chunking.py
     generation.py
   scripts/ingest_docs.py
+  scripts/ol9-integration-test.sh
+  scripts/ol9-run-tests-inner.sh
   data/sample_docs/         # example .txt files
   tests/                    # unit tests + README regression test
   chroma_db/                # local vectors (gitignored, created on first ingest)
